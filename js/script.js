@@ -7,28 +7,48 @@ let isNumber = function(n) {
 }
 
 function start() {
-  //Замыкаем переменные с загаданным и введённым числом
+  //Замыкаем переменные с загаданным, введённым числом и кол-вом попыток
   let desirNumber = getRandomInt(1,100);
   let customNumber = +prompt("Введите число");
+  let userHP = 10;
   //рекурсивная функция игрового цикла
   function gameLoop() {
     if (!isNumber(customNumber)) {
       customNumber = +prompt("Введите число!");
       gameLoop();
     } else {
-      if (customNumber > desirNumber) {
-        customNumber = +prompt("Загаданное число меньше. Введите ещё вариант");
-      gameLoop();
+      userHP--;
+      if (userHP === 0) {
+        if (confirm("Попытки закончились, хотите сыграть еще?")) {
+          //Заново создаём переменную, содержащую функцию игрового цикла
+          //для того, чтобы обновить замкнутые переменные
+          let newGame = start();
+          newGame();
+        } else {
+          alert("Пока!")
+        }
       } else {
-        if (customNumber < desirNumber) {
-          customNumber = +prompt("Загаданное число больше. Введите ещё вариант");
+        if (customNumber > desirNumber) {
+          customNumber = +prompt("Загаданное число меньше. Осталось попыток " + userHP);
           gameLoop();
         } else {
-          alert("Победа!");
-          return;
+          if (customNumber < desirNumber) {
+            customNumber = +prompt("Загаданное число больше. Осталось попыток " + userHP);
+            gameLoop();
+          } else {
+            if (confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?")) {
+              //Заново создаём переменную, содержащую функцию игрового цикла
+              //для того, чтобы обновить замкнутые переменные
+              let newGame = start();
+              newGame();
+            } else {
+              alert("Пока!")
+            }
+          }
         }
       }
     } 
+    return;
   }
   //возвращаем функцию для игрового цикла
   return gameLoop;
