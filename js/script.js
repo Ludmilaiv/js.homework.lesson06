@@ -25,10 +25,10 @@ function start() {
           gameLoop();
         } else {
           alert("Победа!");
-          return;
         }
       }
     } 
+    return;
   }
   //возвращаем функцию для игрового цикла
   return gameLoop;
